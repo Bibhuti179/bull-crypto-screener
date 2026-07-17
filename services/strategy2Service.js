@@ -53,7 +53,7 @@ const checkStrategy2 = (hourlyCandles, dailyCandle, symbol) => {
             symbol,
             currentHigh: C0.high,
             secondPreviousLow: C2.low,
-            candleTime: convertToIST(C0.closeTime)
+            candleTime: C0.closeTime
         };
     }
 

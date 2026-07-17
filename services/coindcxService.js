@@ -66,6 +66,9 @@ console.log("================================");
         */
 
         return data.reverse();
+        console.log("\nLast 3 Candles Returned");
+
+console.log(data.slice(-3));
 
     } catch (error) {
 

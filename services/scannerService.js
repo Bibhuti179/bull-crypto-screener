@@ -59,17 +59,24 @@ const scanSingleSymbol = async (symbol) => {
         }
 
         // Remove currently forming candle
-        //hourlyRaw.pop();
-        //dailyRaw.pop();
+        hourlyRaw.pop();
+        dailyRaw.pop();
 
         let hourlyCandles =
             convertToHeikinAshi(hourlyRaw);
+            console.log("\n================ NORMAL CANDLES ================");
+
+console.table(hourlyRaw.slice(-5));
+
+console.log("\n================ HEIKIN ASHI ================");
+
+console.table(hourlyCandles.slice(-5));
 
         let dailyCandles =
             convertToHeikinAshi(dailyRaw);
 
         hourlyCandles =
-            applyBollingerBands(hourlyCandles);
+    applyBollingerBands(hourlyRaw, hourlyCandles);
             console.log("\n==============================");
 console.log(`${symbol} 1H Heikin Ashi`);
 console.log("==============================");
@@ -111,7 +118,7 @@ last4.forEach((candle, index) => {
 });
 
         dailyCandles =
-            applyBollingerBands(dailyCandles);
+    applyBollingerBands(dailyRaw, dailyCandles);
             console.log("\n==============================");
 console.log(`${symbol} Daily Heikin Ashi`);
 console.log("==============================");
@@ -221,7 +228,8 @@ const scanMarket = async () => {
         console.log("CRYPTO SCREENER STARTED");
         console.log("======================================");
 
-        const symbols = await getAllFutureSymbols();
+       const symbols = await getAllFutureSymbols();
+      //const symbols = ["B-ESPORTS_USDT"];
        // DEBUG ONLY
           // const symbols = ["BTCUSDT"];
        // console.log(`Total Symbols : ${symbols.length}`);

@@ -1,4 +1,5 @@
 const { BB_PERIOD, BB_STD_DEV } = require("../config/constants");
+const { BollingerBands } = require("technicalindicators");
 
 /*
 |--------------------------------------------------------------------------
@@ -95,7 +96,7 @@ const calculateStandardDeviation = (values, mean) => {
 | Bollinger Bands
 |--------------------------------------------------------------------------
 */
-
+/*
 const applyBollingerBands = (haCandles) => {
 
     for (let i = 0; i < haCandles.length; i++) {
@@ -128,8 +129,37 @@ const applyBollingerBands = (haCandles) => {
     }
 
     return haCandles;
-};
+};*/
+const applyBollingerBands = (normalCandles, haCandles) => {
 
+    for (let i = 0; i < haCandles.length; i++) {
+
+        if (i < BB_PERIOD - 1) {
+
+            haCandles[i].upperBB = null;
+            haCandles[i].middleBB = null;
+            haCandles[i].lowerBB = null;
+
+            continue;
+        }
+
+        const closes = normalCandles
+            .slice(i - BB_PERIOD + 1, i + 1)
+            .map(candle => Number(candle.close));
+
+        const sma = calculateSMA(closes);
+
+        const std = calculateStandardDeviation(closes, sma);
+
+        haCandles[i].middleBB = sma;
+        haCandles[i].upperBB = sma + (BB_STD_DEV * std);
+        haCandles[i].lowerBB = sma - (BB_STD_DEV * std);
+
+    }
+
+    return haCandles;
+
+};
 module.exports = {
 
     convertToHeikinAshi,
